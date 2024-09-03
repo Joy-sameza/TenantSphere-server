@@ -1,4 +1,3 @@
-```markdown
 # TenantSphere Project Setup and Architecture Guide
 
 ## Introduction
@@ -104,4 +103,3 @@ To ensure that anyone cloning the repository can quickly set up their environmen
 
 ## Conclusion
 This project structure and setup guide will help you developers quickly understand the architecture, configure their environment, and start contributing to the project. By following a clean, modular architecture, we ensure that the codebase remains maintainable and scalable as the project grows. 
-``` 
