@@ -60,7 +60,7 @@ To ensure that anyone cloning the repository can quickly set up their environmen
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/yourusername/tenantsphere.git
+   git clone https://github.com/tenant-sphere5/TenantSphere-server.git
    cd tenantsphere
    ```
 
