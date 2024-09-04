@@ -1,0 +1,9 @@
+{
+    "{src,test}/**/*.ts": [
+        "npm run format",
+        "npm run lint"
+    ],
+    "*.json": [
+        "prettier --write"
+    ]
+}
