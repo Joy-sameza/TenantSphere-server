@@ -1,0 +1,118 @@
+name: Dev Containers Prebuild
+
+on:
+  pull_request:
+    types: [closed]
+    branches: main
+    paths:
+      - "docker-compose.dev.yml"
+      - "Dockerfile.dev"
+      - "package*.json"
+      - .github/workflows/prebuild.yml
+  workflow_dispatch:
+    inputs:
+      compose_file:
+        description: "The path to docker compose file"
+        type: string
+        required: true
+        default: "docker-compose.dev.yml"
+      dockerfile:
+        description: "The dockerfile path"
+        type: string
+        required: true
+        default: "Dockerfile.dev"
+
+permissions:
+  contents: read
+  packages: write
+  pull-requests: read
+
+env:
+  DUN: ${{ secrets.DOCKER_HUB_USERNAME }}
+  DTK: ${{ secrets.DOCKER_HUB_TOKEN }}
+  DRP: ${{ secrets.DOCKER_HUB_REPO }}
+  DOCKERFILE: ${{ inputs.dockerfile }}
+  COMPOSE_FILE: ${{ inputs.compose_file }}
+
+jobs:
+  prebuild:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.6.1
+
+      - name: Build image using compose file
+        run: docker-compose -f ${{ env.COMPOSE_FILE }} build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4.4.0
+        with:
+          name: dev-containers
+          path: .
+
+  ghcr_publish:
+    needs: [prebuild]
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: dev-containers
+          path: .
+
+      - name: Push artifacts (image) to GitHub Container Registry
+        run: |
+          docker push ghcr.io/${{ env.DRP }}:${{ github.sha }}, \
+          ghcr.io/${{ env.DRP }}:v1.0.${{ github.run_number }}, \
+          ghcr.io/${{ env.DRP }}:dev-latest
+
+      - name: Logout from GitHub Container Registry
+        run: docker logout ghcr.io
+
+  dockerhub_publish:
+    needs: [prebuild]
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3.3.0
+        with:
+          username: ${{ env.DUN }}
+          password: ${{ env.DTK }}
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: dev-containers
+          path: .
+
+      - name: Push artifacts (image) to Docker Hub
+        run: |
+          docker push ${{ env.DRP }}:${{ github.sha }}, \
+          ${{ env.DRP }}:v1.0.${{ github.run_number }}, \
+          ${{ env.DRP }}:dev-latest
+
+      - name: Logout from Docker Hub
+        run: docker logout
+
+  closure:
+    needs: [ghcr_publish, dockerhub_publish]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup
+        run: |
+          docker system prune -a -f
+          docker builder prune -a -f
+          docker rmi $(docker images --filter "label=org.opencontainers.image.created=true" -q) -f

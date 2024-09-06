@@ -1,0 +1,62 @@
+services:
+  ts-devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      NODE_ENV: development
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo-db
+      - redis
+    volumes:
+      - /usr/src/ts_devcontainer:/workspace/tenantspher_server
+      - /workspace/tenantspher_server/node_modules
+    working_dir: /workspace/tenantspher_server
+    networks:
+      - mongo-network
+      - redis-network
+      
+  mongo-db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - mongo-network
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo-db
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_SERVER: mongo-db
+    networks:
+      - mongo-network
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - redis-network
+
+networks:
+  mongo-network:
+  redis-network:
+
+volumes:
+  mongo-data:
+  redis-data:
