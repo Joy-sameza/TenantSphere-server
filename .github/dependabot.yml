@@ -1,0 +1,21 @@
+version: 2
+updates:
+ - package-ecosystem: "devcontainers"
+   directory: "/"
+   schedule:
+     interval: daily
+     time: "03:50"
+     timezone: "Africa/Douala"
+ - package-ecosystem: "npm"
+   directory: "/"
+   schedule:
+     interval: daily
+     time: "04:20"
+     timezone: "Africa/Douala"
+ - package-ecosystem: "github-actions"
+   directory: "/"
+   schedule:
+     interval: weekly
+     day: "monday"
+     time: "04:50"
+     timezone: "Africa/Douala"
