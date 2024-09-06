@@ -1,8 +1,11 @@
 {
   "name": "tenantsphere-devcontainer",
-  "dockerComposeFile": "../docker-compose-dev.yml",
-  "service": "ts-devcontainer",
-  "workspaceFolder": "/usr/src/ts_devcontainer",
+  // "dockerComposeFile": "../docker-compose-dev.yml",
+  // "service": "ts-devcontainer",
+  // "workspaceFolder": "/usr/src/ts_devcontainer",
+  "build": {
+    "dockerfile": "../Dockerfile.dev"
+  },
   "forwardPorts": [3000, 3001],
   "portsAttributes": {
     "3000": {
@@ -22,9 +25,5 @@
         "rangav.vscode-thunder-client"
       ]
     }
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/git-lfs:1": {}
-  },
-  "postCreateCommand": "/usr/local/share/pull-git-lfs-artifacts.sh"
+  }
 }
