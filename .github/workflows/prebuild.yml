@@ -1,8 +1,15 @@
 name: Dev Containers Prebuild
 
 on:
+  push:
+    branches-ignore: main
+    paths:
+      - "docker-compose.dev.yml"
+      - "Dockerfile.dev"
+      - "package*.json"
+      - .github/workflows/prebuild.yml
   pull_request:
-    # branches: main
+    branches: main
     paths:
       - "docker-compose.dev.yml"
       - "Dockerfile.dev"
@@ -38,7 +45,6 @@ env:
 jobs:
   prebuild:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
