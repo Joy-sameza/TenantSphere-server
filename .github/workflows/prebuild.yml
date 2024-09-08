@@ -85,12 +85,6 @@ jobs:
             ghcr.io/${{ env.GH_RP }}:dev-latest
           cache-from: type=registry,ref=ghcr.io/${{ env.GH_RP }}:buildcache
           cache-to: type=registry,ref=ghcr.io/${{ env.GH_RP }}:buildcache,mode=max
-      
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4.4.0
-        with:
-          name: dev-containers
-          path: /tmp/devcontainer.tar
 
       - name: Cleanup
         run: |
