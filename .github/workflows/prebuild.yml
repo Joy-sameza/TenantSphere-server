@@ -11,10 +11,8 @@ on:
   pull_request:
     branches: main
     paths:
-      - "docker-compose.dev.yml"
-      - "Dockerfile.dev"
       - "package*.json"
-      - .github/workflows/prebuild.yml
+      - .github/workflows/*.yml
   workflow_dispatch:
     inputs:
       compose_file:
@@ -41,6 +39,7 @@ env:
 jobs:
   prebuild:
     runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
     steps:
       - name: Set Repository name
         run: echo "GH_RP=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
