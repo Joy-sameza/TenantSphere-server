@@ -39,7 +39,8 @@ env:
 jobs:
   prebuild:
     runs-on: ubuntu-latest
-    if: github.ref_name == 'main'
+    if: |
+      github.ref_name == 'main' && github.event_name == 'push' || github.ref_name != 'main' && github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Set Repository name
         run: echo "GH_RP=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
