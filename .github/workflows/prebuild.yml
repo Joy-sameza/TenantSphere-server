@@ -75,6 +75,7 @@ jobs:
 
       - name: Build and export
         uses: docker/build-push-action@v6.7.0
+        id: push
         with:
           file: ${{ env.DOCKERFILE }}
           sbom: true
@@ -85,6 +86,13 @@ jobs:
             ghcr.io/${{ env.GH_RP }}:dev-latest
           cache-from: type=registry,ref=ghcr.io/${{ env.GH_RP }}:buildcache
           cache-to: type=registry,ref=ghcr.io/${{ env.GH_RP }}:buildcache,mode=max
+      - name: Attest
+        uses: actions/attest-build-provenance@v1.4.3
+        id: attest
+        with:
+          subject-name: ghcr.io/${{ env.GH_RP }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
 
       - name: Cleanup
         run: |
