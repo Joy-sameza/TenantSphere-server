@@ -1,0 +1,30 @@
+name: Automerge PRs
+
+on:
+  pull_request:
+    types:
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - review_requested
+  status:
+
+permissions:
+  contents: write
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    if: github.event.state == 'success'
+    steps:
+      - name: Integration check
+        uses: squalrus/merge-bot@v0.4.5
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          test: true
+          reviewers: true
+          checks_enabled: true
+          blocking_labels: do not merge
+          method: squash
+          delete_source_branch: true

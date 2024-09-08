@@ -1,14 +1,18 @@
 name: Dev Containers Prebuild
 
 on:
-  pull_request:
-    types: [closed]
-    branches: main
+  push:
+    branches-ignore: main
     paths:
       - "docker-compose.dev.yml"
       - "Dockerfile.dev"
       - "package*.json"
       - .github/workflows/prebuild.yml
+  pull_request:
+    branches: main
+    paths:
+      - "package*.json"
+      - .github/workflows/*.yml
   workflow_dispatch:
     inputs:
       compose_file:
@@ -28,26 +32,33 @@ permissions:
   pull-requests: read
 
 env:
-  DUN: ${{ secrets.DOCKER_HUB_USERNAME }}
-  DTK: ${{ secrets.DOCKER_HUB_TOKEN }}
-  DRP: ${{ secrets.DOCKER_HUB_REPO }}
-  DOCKERFILE: ${{ inputs.dockerfile }}
-  COMPOSE_FILE: ${{ inputs.compose_file }}
-  GH_RP: ${{ github.repository }}
-  package_version: v1.0.${{ github.run_number }}
+  DOCKERFILE: ${{ inputs.dockerfile || 'Dockerfile.dev' }}
+  COMPOSE_FILE: ${{ inputs.compose_file || 'docker-compose.dev.yml' }}
+  GH_TK: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   prebuild:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    if: |
+      github.ref_name != 'main' && github.event_name == 'push' || github.ref_name == 'main' && github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     steps:
+      - name: Set Repository name
+        run: echo "GH_RP=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
 
       - name: Get package version
-        uses: ./.github/actions/versioning.yml
+        id: bump_version
+        uses: mathieudutour/github-tag-action@v6.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ env.GH_TK }}
+          release_branches: main
+          dry_run: true
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3.2.0
@@ -60,7 +71,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ env.GH_TK }}
 
       - name: Build and export
         uses: docker/build-push-action@v6.7.0
@@ -70,19 +81,12 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ env.GH_RP }}:${{ github.sha }}
-            ghcr.io/${{ env.GH_RP }}:${{ env.package_version }}
+            ghcr.io/${{ env.GH_RP }}:${{ steps.bump_version.outputs.new_tag }}
             ghcr.io/${{ env.GH_RP }}:dev-latest
           cache-from: type=registry,ref=ghcr.io/${{ env.GH_RP }}:buildcache
           cache-to: type=registry,ref=ghcr.io/${{ env.GH_RP }}:buildcache,mode=max
-      
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4.4.0
-        with:
-          name: dev-containers
-          path: /tmp/devcontainer.tar
 
       - name: Cleanup
         run: |
           docker system prune -a -f
           docker builder prune -a -f
-          docker rmi $(docker images --filter "label=org.opencontainers.image.created=true" -q) -f

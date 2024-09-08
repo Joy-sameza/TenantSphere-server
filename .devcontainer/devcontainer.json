@@ -1,11 +1,11 @@
 {
   "name": "tenantsphere-devcontainer",
-  // "dockerComposeFile": "../docker-compose-dev.yml",
-  // "service": "ts-devcontainer",
-  // "workspaceFolder": "/usr/src/ts_devcontainer",
-  "build": {
-    "dockerfile": "../Dockerfile.dev"
-  },
+  "dockerComposeFile": "../docker-compose-dev.yml",
+  "service": "ts-devcontainer",
+  "workspaceFolder": "/usr/src/ts_devcontainer",
+  // "build": {
+  //   "dockerfile": "../Dockerfile.dev"
+  // },
   "forwardPorts": [3000, 3001],
   "portsAttributes": {
     "3000": {

@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    image: ghcr.io/joy-sameza/tenantsphere-server:dev-latest
     environment:
       NODE_ENV: development
     ports:
