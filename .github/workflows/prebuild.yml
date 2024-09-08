@@ -39,13 +39,17 @@ env:
   DRP: ${{ secrets.DOCKER_HUB_REPO }}
   DOCKERFILE: ${{ inputs.dockerfile }}
   COMPOSE_FILE: ${{ inputs.compose_file }}
-  GH_RP: ${{ github.repository }}
   GH_TK: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   prebuild:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Repository name
+        run: echo "GH_RP=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
