@@ -36,7 +36,7 @@ body?
 footer?
 ```
 
-The `<type>` and `<subject>` fields are mandatory, the `(<scope>)`, `<body>`, and `<footer>` fields are optional.
+The `<type>` and `<subject>` fields are **mandatory**, the `(<scope>)`, `<body>`, and `<footer>` fields are **optional**.
 
 ```txt
 <type>(<scope>): <subject>
