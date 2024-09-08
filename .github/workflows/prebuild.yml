@@ -54,7 +54,7 @@ jobs:
 
       - name: Get package version
         id: bump_version
-        uses: mathieudutour/github-tag-action@v6.0
+        uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ env.GH_TK }}
           release_branches: main
