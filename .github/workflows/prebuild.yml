@@ -34,11 +34,8 @@ permissions:
   pull-requests: read
 
 env:
-  DUN: ${{ secrets.DOCKER_HUB_USERNAME }}
-  DTK: ${{ secrets.DOCKER_HUB_TOKEN }}
-  DRP: ${{ secrets.DOCKER_HUB_REPO }}
-  DOCKERFILE: ${{ inputs.dockerfile }}
-  COMPOSE_FILE: ${{ inputs.compose_file }}
+  DOCKERFILE: ${{ inputs.dockerfile || 'Dockerfile.dev' }}
+  COMPOSE_FILE: ${{ inputs.compose_file || 'docker-compose.dev.yml' }}
   GH_TK: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
@@ -52,6 +49,8 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
 
       - name: Get package version
         id: bump_version
@@ -97,4 +96,3 @@ jobs:
         run: |
           docker system prune -a -f
           docker builder prune -a -f
-          docker rmi $(docker images --filter "label=org.opencontainers.image.created=true" -q) -f
