@@ -101,5 +101,14 @@ To ensure that anyone cloning the repository can quickly set up their environmen
      npm run test:e2e
      ```
 
+## Contributing
+
+If you want to contribute, please follow the [contribution guidelines](https://github.com/tenant-sphere5/TenantSphere-server/blob/main/CONTRIBUTING.md)
+
 ## Conclusion
-This project structure and setup guide will help you developers quickly understand the architecture, configure their environment, and start contributing to the project. By following a clean, modular architecture, we ensure that the codebase remains maintainable and scalable as the project grows. 
+
+This project structure and setup guide will help you developers quickly understand the architecture, configure their environment, and start contributing to the project. By following a clean, modular architecture, we ensure that the codebase remains maintainable and scalable as the project grows.
+
+## License
+
+This project is licensed under the [Proprietary License](LICENSE).
