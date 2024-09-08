@@ -39,6 +39,9 @@ env:
 jobs:
   prebuild:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
     if: |
       github.ref_name != 'main' && github.event_name == 'push' || github.ref_name == 'main' && github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     steps:
