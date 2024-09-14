@@ -2,7 +2,6 @@ services:
   ts-devcontainer:
     build:
       context: .
-      dockerfile: Dockerfile.dev
     environment:
       NODE_ENV: development
     ports:
@@ -14,6 +13,7 @@ services:
       - /usr/src/ts_devcontainer:/workspace/tenantspher_server
       - /workspace/tenantspher_server/node_modules
     working_dir: /workspace/tenantspher_server
+    scale: 0
     networks:
       - mongo-network
       - redis-network
