@@ -4,8 +4,8 @@ on:
   push:
     branches-ignore: main
     paths:
-      - "docker-compose.dev.yml"
-      - "Dockerfile.dev"
+      - "**/docker-compose*.yml"
+      - "Dockerfile*"
       - "package*.json"
       - .github/workflows/prebuild.yml
   pull_request:
