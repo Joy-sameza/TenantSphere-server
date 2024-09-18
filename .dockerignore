@@ -10,12 +10,14 @@
 **/.settings
 **/.toolstarget
 **/.vs
-**/.vscode
+**/.vscode*
 **/.next
 **/.cache
 **/*.*proj.user
 **/*.dbmdl
 **/*.jfm
+**/.github
+**/renovate.json
 **/charts
 **/docker-compose*
 **/compose.y*ml
@@ -28,4 +30,4 @@
 **/build
 **/dist
 LICENSE
-README.md
+# README.md

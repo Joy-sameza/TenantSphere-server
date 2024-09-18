@@ -1,29 +1,68 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node-mongo
 {
-  "name": "tenantsphere-devcontainer",
-  "dockerComposeFile": "../docker-compose-dev.yml",
-  "service": "ts-devcontainer",
-  "workspaceFolder": "/usr/src/ts_devcontainer",
-  // "build": {
-  //   "dockerfile": "../Dockerfile.dev"
-  // },
-  "forwardPorts": [3000, 3001],
+  "name": "TenantSphere Server",
+  // "dockerComposeFile": "docker-compose.yml",
+  // "service": "app",
+  // "workspaceFolder": "/workspaces/tenantsphere",
+  "build": {
+    "dockerfile": "../Dockerfile.dev",
+    "context": ".."
+  },
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "mongodb.mongodb-vscode",
+        "bierner.markdown-preview-github-styles",
+        "davidanson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "Codeium.codeium",
+        "github.vscode-pull-request-github",
+        "rvest.vs-code-prettier-eslint",
+        "yzhang.markdown-all-in-one",
+        "Orta.vscode-jest",
+        "rangav.vscode-thunder-client"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.tabSize": 2,
+        "editor.formatOnSave": true,
+        "markdown.extension.list.indentationSize": "adaptive",
+        "markdown.extension.italic.indicator": "_",
+        "markdown.extension.orderedList.marker": "one",
+        "editor.cursorBlinking": "expand",
+        "editor.cursorSmoothCaretAnimation": "on",
+        "editor.fontLigatures": true,
+        "editor.formatOnPaste": true,
+        "editor.largeFileOptimizations": false,
+        "editor.tabCompletion": "off",
+        "editor.wordSeparators": "`~!@#$%^&*()-=+[{]}\\|;:'\",.<>/?",
+        "explorer.confirmDelete": false,
+        "explorer.confirmDragAndDrop": false,
+        "files.autoSave": "afterDelay",
+        "files.defaultLanguage": "",
+        "files.autoSaveWhenNoErrors": true,
+        "git.confirmSync": false,
+        "git.autofetch": true,
+        "git.enableSmartCommit": true
+      }
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git-lfs:1": {}
+  },
+  "forwardPorts": [3200, 27018],
   "portsAttributes": {
-    "3000": {
-      "label": "Tenantsphere Server Port",
-      "onAutoForward": "notify"
-    },
-    "3001": {
-      "label": "Mongo-express Port",
+    "3000-4000": {
+      "label": "Application",
       "onAutoForward": "notify"
     }
   },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-vscode.vscode-typescript-language-features",
-        "esbenp.prettier-vscode",
-        "rangav.vscode-thunder-client"
-      ]
-    }
-  }
+  "postCreateCommand": "git config --global --add safe.directory ${workspaceFolder} && npm install"
 }
