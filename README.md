@@ -1,12 +1,17 @@
 # TenantSphere Project Setup and Architecture Guide
 
+![Contributors](https://img.shields.io/github/contributors/tenant-sphere5/TenantSphere-server)
+![Coverage](./badges/coverage.svg)
+
 ## Introduction
+
 This document provides a structured approach to setting up and maintaining the TenantSphere project using NestJS with MongoDB. By following a clean and modular architecture, the codebase remains maintainable, scalable, and easy for team members to understand and contribute to.
 
 ## Project Structure
+
 The project is organized into a clear and concise structure to promote maintainability and scalability. The main directories are as follows:
 
-```
+```bash
 src/
 │
 ├── common/
@@ -54,17 +59,20 @@ src/
 5. **main.ts**: Entry point of the application. Initializes and starts the NestJS application.
 
 ## Setting Up the Environment
+
 To ensure that anyone cloning the repository can quickly set up their environment and start working, follow these instructions:
 
 **Step-by-Step Setup Instructions:**
 
 1. **Clone the Repository:**
+
    ```bash
    git clone https://github.com/tenant-sphere5/TenantSphere-server.git
    cd tenantsphere
    ```
 
 2. **Install Dependencies:**
+
    ```bash
    npm install
    ```
@@ -73,30 +81,30 @@ To ensure that anyone cloning the repository can quickly set up their environmen
    - Create a `.env` file in the root of the project.
    - Copy the contents of `.env.example` (if available) into `.env`.
    - Configure the environment variables such as database URLs, API keys, etc.
+
    **Example `.env` file:**
 
-   ```
+   ```env
    MONGO_URI=mongodb://localhost:27017/tenantsphere
    JWT_SECRET=your_jwt_secret
    PORT=5000
    ```
 
-4. **Run the Database Migrations (if applicable):**
-   ```bash
-   npm run migrations
-   ```
+4. **Start the Application:**
 
-5. **Start the Application:**
    ```bash
    npm run start:dev
    ```
 
-6. **Testing:**
+5. **Testing:**
    - To run the unit tests:
-     ```bash
-     npm run test
-     ```
-   - To run the e2e tests:
+
+      ```bash
+      npm run test
+      ```
+
+   - To run the e2e tests (aka. end-to-end tests):
+
      ```bash
      npm run test:e2e
      ```

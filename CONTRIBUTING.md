@@ -1,8 +1,58 @@
 # Contributing to this Repository
 
+## Table of content
+
+- [Introduction](#introduction)
+- [Requirements](#requirements)
+- [Git dynamics and etiquette](#git-dynamics-and-etiquette)
+- [Branch naming](#branch-names)
+
 ## Introduction
 
 This document provides instructions on how to contribute to this repository. Please follow the instructions carefully. If you have any questions or suggestions, please create an [issue](https://github.com/tenant-sphere5/TenantSphere-server/issues/new) with the label **`help wanted`**.
+
+## Requirements
+
+In order to start developing on the project, you'll need to:
+
+- Have **`Docker`** installed on your computer. You can visit the [official Docker documentation](https://docs.docker.com/get-docker/) for the installation instructions.
+- Have **`Git`** installed on your computer. To be able to clone the project to your local machine, you can visit the [official Git documentation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for the installation instructions.
+- A code editor. Preferably, **`VS Code`**. You can visit the [official VS Code documentation](https://code.visualstudio.com/) for the installation instructions.
+
+## Getting started
+
+1. After you have the **`Docker`** and **`Git`** installed on your computer, you can start cloning the project.
+
+   ```bash
+   git clone https://github.com/tenant-sphere5/TenantSphere-server.git
+   ```
+
+2. After that, you can start working on the project.
+
+    ```bash
+    cd TenantSphere-server
+    ```
+
+3. Lauch the project in VS Code. You can use the command **`code .`** to launch the project.
+
+   ```bash
+   code .
+   ```
+
+4. Install the `Dev Containers` VS Code extension if it's not already installed. We recommend using the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.You can use the following command:
+
+   ```bash
+   code --install-extension ms-vscode-remote.remote-containers
+   ```
+
+5. Once the extension is installed
+
+   - Press **`F1`** to bring up the Command Palette and type in **`Dev Containers`** for a full list of commands.
+
+     ![devcontainers command list](./.github/assets/image.png)
+
+   - Click **`Dev Containers: Reopen in Container`** to launch the Dev Containers extension.
+   - Give it some time to launch, then you can start contributing.
 
 ## Git dynamics and etiquette
 
@@ -64,13 +114,13 @@ Must be one of the following:
 - **chore**: Other changes that don't modify src or test files
 - **revert**: Reverts a previous commit
 
-##### **Scope:**
+#### **Scope:**
 
 The scope of the commit.
 
 Can be left empty in some cases like `test: add missing unit tests`, `docs: fix typo in user module`.
 
-##### **Subject:**
+#### **Subject:**
 
 Use the subject field to provide a succinct description of the change:
 
@@ -82,9 +132,15 @@ Use the subject field to provide a succinct description of the change:
 
 When creating a pr, please:
 
-- Provide a short title that follows the same rules as in [Commenting on commits](CONTRIBUTING.md#commenting-on-commits) above.
+- Provide a short title that follows the same rules as in [Commenting on commits](#commenting-on-commits) above.
 - Provide a detailed description of the change in the body of the PR.
 - Be as detailed as possible in the footer.
+- If you have a lot of work to do, please split it into multiple PRs.
+
+> Note:
+>
+> - **DO NOT MERGE THE PR YOURSELF**
+> - **ALWAYS REQUIRE A REVIEW**
 
 ### After your pull request is merged
 
@@ -136,16 +192,16 @@ When you're ready to create a pull request, please follow these simple rules:
 - Branch names are always **`lower-case`**.
 - Branch names comprise (at minimum) of 2 words separated by a slash `<prefix>/<label>`, where:
 
-    - `<prefix>`: one of `feature`, `bugfix`, `docs` or `hotfix`. Do not use any other word!
-    - `<label>`:  1-5 words describing the branch, separated by dashes (`-`).
-    - Ideally, the first word in `<label>` should be a noun, not a verb.
+  - `<prefix>`: one of `feature`, `bugfix`, `docs` or `hotfix`. Do not use any other word!
+  - `<label>`:  1-5 words describing the branch, separated by dashes (`-`).
+  - Ideally, the first word in `<label>` should be a noun, not a verb.
 
-    Example:
+  #### Example
 
-    - `john/user-login` – **`WRONG`** ❌, the `<prefix>` isn't supported: `john`
-    - `feature/user-login` – **`RIGHT`** ✅
-    - `hotfix/userLogin` – **`WRONG`** ❌, the branch name must be `lower-case`, and words in `<label>` must be separated by dashes.
-    - `hotfix/user-login` – **`RIGHT`** ✅
+  - `john/user-login` – **`WRONG`** ❌, the `<prefix>` isn't supported: `john`
+  - `feature/user-login` – **`RIGHT`** ✅
+  - `hotfix/userLogin` – **`WRONG`** ❌, the branch name must be `lower-case`, and words in `<label>` must be separated by dashes.
+  - `hotfix/user-login` – **`RIGHT`** ✅
 
 ### Branch prefixes
 
